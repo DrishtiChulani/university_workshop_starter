@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "Transaction-level fact table containing orders metrics."
+    columns:
+      - name: order_id
+        data_tests:
+          - unique
+          - not_null
+
+  - name: dim_customers
+    description: "Customer-level dimension table capturing lifetime behavior."
+    columns:
+      - name: customer_id
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['new', 'returning']

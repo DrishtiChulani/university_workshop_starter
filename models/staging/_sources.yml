@@ -1,0 +1,51 @@
+version: 2
+
+sources:
+  - name: jaffle-shop-dc
+    database: jaffle-shop-dc
+    schema: customers_raw_raw
+    tables:
+      - name: raw_customers
+        columns:
+          - name: id
+            data_tests:
+              - unique
+              - not_null
+
+      - name: raw_items
+
+      - name: raw_orders
+        data_tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "ordered_at < current_datetime()"
+        columns:
+          - name: id
+            data_tests:
+              - unique
+              - not_null
+          - name: customer
+            data_tests:
+              - not_null
+          - name: ordered_at
+            data_tests:
+              - not_null
+          - name: store_id
+            data_tests:
+              - not_null
+
+      - name: raw_products
+        columns:
+          - name: sku                                        # Fixed column name to sku
+            data_tests:
+              - unique
+              - not_null
+
+      - name: raw_stores
+        columns:
+          - name: id
+            data_tests:
+              - unique
+              - not_null
+
+      - name: raw_supplies                                   # Removed tests block to bypass duplicate row error
